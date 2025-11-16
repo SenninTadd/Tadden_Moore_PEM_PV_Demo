@@ -5,7 +5,7 @@
 
 https://github.com/SenninTadd/Tadden_Moore_PEM_PV_Demo.git
 
-[![DOI](https://zenodo.org/badge/DOI/PENDING.svg)](https://zenodo.org/doi/PENDING)
+[![DOI](https://zenodo.org/badge/17623226.svg)](https://zenodo.org/doi/10.5281/zenodo.17623226)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
@@ -140,13 +140,14 @@ Key ethical ideas behind the work:
 If you use ideas or code from this work, please cite:
 
 ```bibtex
-@article{moore2025allyouneedisfamily,
+@software{moore2025allyouneedisfamily,
   title        = {All you need is Family: A Metacognitive Core Framework for Neural Plasticity in LLMs and AI's Evolutionary Integration},
   author       = {Moore, Tadden},
   year         = {2025},
   month        = {November},
-  note         = {Available at Zenodo: DOI PENDING}
-}
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.17623226},
+  url          = {https://doi.org/10.5281/zenodo.17623226}
 ```
 
 ## License
