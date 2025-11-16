@@ -118,7 +118,7 @@ class TestSAEFeatureExtraction(unittest.TestCase):
         """Test decoding falls back to manual W_dec matrix multiplication"""
         # Mock SAE without decode method
         mock_sae = Mock(spec=[])  # spec=[] means no methods
-        W_dec = torch.randn(self.feature_dim, self.hidden_dim)
+        W_dec = torch.randn(self.hidden_dim, self.feature_dim)  # Correct dimensions: [hidden, feature]
         mock_sae.W_dec = Mock()
         mock_sae.W_dec.T = W_dec.T
 
@@ -129,7 +129,7 @@ class TestSAEFeatureExtraction(unittest.TestCase):
         result = _decode_feats(mock_sae, feats)
 
         # Assertions
-        expected = feats @ W_dec.T
+        expected = feats @ W_dec.T  # [B, S, F] @ [F, H] = [B, S, H]
         self.assertTrue(torch.allclose(result, expected, atol=1e-6))
 
     def test_encode_decode_roundtrip_preserves_shape(self):
@@ -166,7 +166,7 @@ class TestSteeringMechanism(unittest.TestCase):
 
         # Create mock SAE
         self.mock_sae = Mock()
-        self.W_dec = torch.randn(self.feature_dim, self.hidden_dim)
+        self.W_dec = torch.randn(self.hidden_dim, self.feature_dim)  # [H, F]
         self.mock_sae.W_dec = Mock()
         self.mock_sae.W_dec.T = self.W_dec.T
 
@@ -199,9 +199,11 @@ class TestSteeringMechanism(unittest.TestCase):
         # Expected delta
         expected_delta = self.concept_feats * strength
 
-        # Mock the encoding
+        # Mock the encoding and decoding
         current_feats = torch.randn(1, 1, self.feature_dim)
         self.mock_sae.return_value = {"feature_acts": current_feats}
+        # Make decode return a real tensor
+        self.mock_sae.decode.return_value = torch.randn(1, 1, self.hidden_dim)
 
         # Create test input
         test_output = torch.randn(self.batch_size, self.seq_len, self.hidden_dim)
@@ -225,9 +227,10 @@ class TestSteeringMechanism(unittest.TestCase):
             max_norm=max_norm
         )
 
-        # Mock encoding
+        # Mock encoding and decoding
         current_feats = torch.randn(1, 1, self.feature_dim)
         self.mock_sae.return_value = {"feature_acts": current_feats}
+        self.mock_sae.decode.return_value = torch.randn(1, 1, self.hidden_dim)
 
         # Create test input
         test_output = torch.randn(self.batch_size, self.seq_len, self.hidden_dim)
@@ -243,8 +246,9 @@ class TestSteeringMechanism(unittest.TestCase):
         """Test that steering count increments on each hook call"""
         steerer = MCSteerer(self.mock_sae, self.concept_feats, strength=4.0)
 
-        # Mock encoding
+        # Mock encoding and decoding
         self.mock_sae.return_value = {"feature_acts": torch.randn(1, 1, self.feature_dim)}
+        self.mock_sae.decode.return_value = torch.randn(1, 1, self.hidden_dim)
 
         # Apply hook multiple times
         test_output = torch.randn(self.batch_size, self.seq_len, self.hidden_dim)
@@ -294,6 +298,7 @@ class TestSteeringMechanism(unittest.TestCase):
 
         # After steering
         self.mock_sae.return_value = {"feature_acts": torch.randn(1, 1, self.feature_dim)}
+        self.mock_sae.decode.return_value = torch.randn(1, 1, self.hidden_dim)
         test_output = torch.randn(self.batch_size, self.seq_len, self.hidden_dim)
 
         steerer.hook(None, None, test_output)
@@ -467,9 +472,10 @@ class TestConceptCapture(unittest.TestCase):
         mock_handle = Mock()
         mock_layer.register_forward_hook.return_value = mock_handle
 
-        # Mock tokenizer
-        mock_inputs = {"input_ids": torch.tensor([[1, 2, 3]])}
-        mock_tok.return_value = mock_inputs
+        # Mock tokenizer - needs to return object with .to() method
+        mock_tok_output = Mock()
+        mock_tok_output.to.return_value = {"input_ids": torch.tensor([[1, 2, 3]])}
+        mock_tok.return_value = mock_tok_output
 
         # Mock model forward pass - we need to trigger the hook
         def mock_forward(**kwargs):
@@ -518,7 +524,7 @@ class TestIntegration(unittest.TestCase):
 
         # Mock SAE
         mock_sae = Mock()
-        W_dec = torch.randn(feature_dim, hidden_dim)
+        W_dec = torch.randn(hidden_dim, feature_dim)  # Correct: [H, F]
         mock_sae.W_dec = Mock()
         mock_sae.W_dec.T = W_dec.T
 
@@ -535,6 +541,7 @@ class TestIntegration(unittest.TestCase):
             return {"feature_acts": torch.randn(1, 1, feature_dim) * call_count[0]}
 
         mock_sae.side_effect = mock_sae_call
+        # Decode: [B, S, F] @ [F, H] = [B, S, H]
         mock_sae.decode.side_effect = lambda f: f @ W_dec.T
 
         # Simulate multiple generation steps
@@ -581,8 +588,9 @@ class TestEdgeCases(unittest.TestCase):
         steerer_pos = MCSteerer(mock_sae, concept_feats, strength=5.0)
         steerer_neg = MCSteerer(mock_sae, concept_feats, strength=-5.0)
 
-        # Mock encoding
+        # Mock encoding and decoding
         mock_sae.return_value = {"feature_acts": torch.zeros(1, 1, 256)}
+        mock_sae.decode.return_value = torch.randn(1, 1, 128)
 
         # Apply both
         test_input = torch.randn(1, 3, 128)
