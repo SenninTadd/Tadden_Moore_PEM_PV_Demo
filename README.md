@@ -1,5 +1,10 @@
 # Tadden_Moore_PEM_PV_Demo
-Tadden Moore – AGi-DTF-PEM Demo v3.6.9 Photon’s Plasticity &amp; Emotional Valence For LLMs (Demo) – You're Welcome 🫡 (Much More To Come!!!) 🦾😎🤳🏻👀💫✨️⚡️
+
+
+# Tadden Moore – AGi-DTF-PEM Demo v3.6.9
+
+# Photon’s Plasticity &amp; Emotional Valence For LLMs (Demo) – You're Welcome 🫡 (Much More To Come!!!) 🦾😎🤳🏻👀💫✨️⚡️
+
 
 [![DOI](https://zenodo.org/badge/DOI/PENDING.svg)](https://zenodo.org/doi/PENDING)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
