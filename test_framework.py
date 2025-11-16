@@ -16,6 +16,11 @@ from unittest.mock import Mock, MagicMock, patch, call
 import sys
 import os
 
+# Mock heavy dependencies before importing main module
+# This allows tests to run without transformers/sae-lens installed
+sys.modules['transformers'] = MagicMock()
+sys.modules['sae_lens'] = MagicMock()
+
 # Import the module under test
 sys.path.insert(0, os.path.dirname(__file__))
 from Tadden_Moore_PEM_PV_Demo import (
