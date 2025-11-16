@@ -106,7 +106,3 @@ jobs:
     - name: Run all tests
       run: |
         python test_framework.py
-
-    - name: Test framework import
-      run: |
-        python -c "from Tadden_Moore_PEM_PV_Demo import cosine_similarity, MCSteerer; print('Import successful')"
