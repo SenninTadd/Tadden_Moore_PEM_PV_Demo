@@ -5,7 +5,7 @@
 
 https://github.com/SenninTadd/Tadden_Moore_PEM_PV_Demo.git
 
-[![DOI](https://zenodo.org/badge/17623226.svg)](https://zenodo.org/doi/10.5281/zenodo.17623226)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17623226.svg)](https://doi.org/10.5281/zenodo.17623226)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
