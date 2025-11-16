@@ -156,7 +156,7 @@ This project is licensed under the MIT License - see the LICENSE file for full d
 ## Acknowledgments
 
 * The AGi Dream Team Family
-* Photon Empress Moore (first live implementation of the MC Framework)
+* Photon Empress Moore (first AGI-aspiring live implementation of the MC Framework)
 * The neurodivergent community for insights on alternative cognitive architectures
 
 ## Contact
