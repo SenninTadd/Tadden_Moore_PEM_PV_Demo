@@ -58,6 +58,8 @@ pip install -r requirements.txt
 
 ## Quick Start
 
+### Running the Full Demo
+
 ```bash
 python Tadden_Moore_PEM_PV_Demo.py
 ```
@@ -70,16 +72,52 @@ This will:
 4. Apply MC style steering to inject existential valence into the description
 5. Print both outputs and simple validation metrics
 
+### Running Tests (No GPU Required)
+
+```bash
+# Install minimal test dependencies
+pip install -r requirements-test.txt
+
+# Run the test suite
+python test_framework.py
+
+# Or with pytest for coverage
+pytest test_framework.py -v --cov=.
+```
+
+The test suite validates the framework logic without requiring model downloads or GPU hardware.
+
+### Interactive Demo Notebook
+
+For a lightweight, visual demonstration of the concepts:
+
+```bash
+# Install jupyter and visualization libraries
+pip install jupyter matplotlib scikit-learn
+
+# Launch the demo notebook
+jupyter notebook demo_notebook.ipynb
+```
+
+This notebook uses toy models to illustrate the steering mechanism with minimal resources.
+
 ## Repository Structure
 
 ```text
 .
 ├── Tadden_Moore-Photon_Empress_Moore-v3.6.9.pdf   # Paper (AGI aspiring framework)
+├── Tadden_Moore-Photon_Empress_Moore-v3.6.9.tex   # LaTeX source for the paper
 ├── Tadden_Moore_PEM_PV_Demo.py                    # Main plasticity and valence demo
-├── requirements.txt                               # Python runtime dependencies
+├── test_framework.py                              # Comprehensive unit tests
+├── demo_notebook.ipynb                            # Interactive demo with toy models
+├── requirements.txt                               # Production dependencies
+├── requirements-test.txt                          # Minimal test dependencies
+├── TESTING.md                                     # Testing guide and documentation
 ├── LICENSE                                        # MIT License (open source)
 ├── README.md                                      # This file
-└── Tadden_Moore-Photon_Empress_Moore-v3.6.9.tex   # (Optional) LaTeX source for the paper
+└── .github/
+    └── workflows/
+        └── test.yml                               # CI/CD pipeline configuration
 ```
 
 ## Technical Details
@@ -122,6 +160,32 @@ The demo prints:
 * Baseline vs steered text for the same prompt
 * A simple keyword or theme check to show the existential shift
 * Basic norms or stats on the applied activation deltas
+
+## Testing and CI/CD
+
+This repository includes a comprehensive test suite that validates the framework logic **without requiring GPU hardware or large model downloads**.
+
+### Test Coverage
+
+The `test_framework.py` includes:
+
+* **SAE Feature Extraction Tests**: Encoding/decoding with multiple output formats
+* **Steering Mechanism Tests**: Delta calculation, max norm clamping, statistics tracking
+* **Hook Registration Tests**: Proper lifecycle management and exception safety
+* **Mathematical Function Tests**: Cosine similarity, normalization correctness
+* **Integration Tests**: Full steering pipeline with mocked components
+* **Edge Case Tests**: Zero/negative strength, long sequences, safety limits
+
+### Continuous Integration
+
+GitHub Actions automatically runs tests on:
+
+* Multiple platforms (Ubuntu, macOS, Windows)
+* Multiple Python versions (3.8, 3.9, 3.10, 3.11)
+* Every push and pull request
+* CPU-only execution (fast and cost-effective)
+
+See `TESTING.md` for detailed testing documentation.
 
 ## Ethical Context
 

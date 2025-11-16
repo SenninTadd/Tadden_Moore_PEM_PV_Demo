@@ -1,0 +1,21 @@
+# Minimal Test Requirements for MC Framework
+# Author: Tadden Moore
+# Date: 2025-11-16
+#
+# These dependencies allow running the test suite without downloading
+# large models or requiring GPU hardware.
+
+# Core testing framework
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+
+# Minimal ML dependencies (CPU only)
+torch>=2.0.0
+numpy>=1.24.0
+
+# Note: We do NOT include transformers, sae-lens, or accelerate here
+# because the test suite uses mocks and doesn't require actual models.
+# This keeps CI/CD fast and lightweight.
+
+# For full integration testing with real models, use requirements.txt instead
