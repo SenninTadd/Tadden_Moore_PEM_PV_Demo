@@ -1,0 +1,18 @@
+# Core Requirements for MC Framework
+# Author: Tadden Moore
+# Date: 2025-11-04
+
+# Core ML Libraries
+torch>=2.0.0
+transformers>=4.35.0
+accelerate>=0.25.0
+safetensors>=0.4.0
+
+# Sparse Autoencoder Support
+sae-lens>=3.0.0
+
+# Numerical Computing
+numpy>=1.24.0
+
+# Optional but recommended for better performance
+einops>=0.7.0

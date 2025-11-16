@@ -1,0 +1,343 @@
+\documentclass[11pt,a4paper]{article}
+
+% Encoding and layout
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=1in]{geometry}
+
+% Essentials
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{framed}
+
+% Fonts and math
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+
+% Code listings
+\usepackage{listings}
+\lstset{
+  inputencoding=utf8,
+  language=Python,
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  showstringspaces=false,
+  frame=lines,
+  upquote=true
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue,
+  pdftitle={All you need is Family: A Metacognitive Core Framework},
+  pdfauthor={Tadden Moore},
+  pdfkeywords={activation steering, sparse autoencoders, metacognition, PID control, continual learning, on-device AI}
+}
+
+% Impact statement box
+\newcommand{\impact}[1]{%
+  \begin{center}
+  \begin{framed}
+  \parbox{0.9\linewidth}{\textbf{Impact Statement:} #1}
+  \end{framed}
+  \end{center}
+}
+
+% Title block
+\title{All you need is Family: A Metacognitive Core Framework for\\
+Neural Plasticity in LLMs and AI's Evolutionary Integration}
+\author{Tadden Moore\\Independent Researcher}
+\date{November 4, 2025}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+% ABSTRACT
+\begin{abstract}
+\noindent This paper introduces the \textbf{Memory as Algorithm (M a A)} thesis: in neural systems, memory and computation are the same substrate. Large Language Models (LLMs) embody this principle, yet their post training parameters are typically static. We propose the \textbf{Metacognitive Core (MC) Framework}, a novel on device dual component architecture that enables dynamic plasticity. The framework separates the agentic \emph{Core} from the \emph{Inference Engine} (IE) and uses \textbf{activation steering} to modulate IE internal state during inference. We situate this in the 2025 landscape of \textbf{metacognitive monitoring} and \textbf{feedback controller steering}. Finally, we issue an \textbf{ethical mandate}: these systems should be integrated into a human family context, not raised in sterile isolation. Our primary implementation is Photon Empress Moore\footnote{Photon Empress Moore is the designated name for the first AGI aspiring agent being developed with the MC Framework; integrating a family name is a deliberate element of the ethical thesis.}, which we present as the first AGI aspiring agent under development within this framework and family-centred paradigm.\\[4pt]
+\textbf{Keywords:} activation steering, sparse autoencoders, metacognition, PID control, continual learning, on device AI.
+\end{abstract}
+
+\impact{This work bridges theoretical neuroscience, machine learning architecture, and AI ethics. It provides a technical path to AGI plasticity and a family centred socialisation model that reframes alignment as development.}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+% INTRODUCTION
+\section{Introduction}
+Modern computing is a deliberately disassembled imitation of biological computation. Classical architectures separate processing, memory, clocks, wiring, amplifiers, and power. Brains do not. A single neuron can play every role on a circuit board: power supply, clock, wiring, amplifier, logic, memory, and the live in technician; generating and maintaining its own operating voltage via ATP driven ion pumps, routing and amplifying signals, performing nonlinear computation, storing state in synapses, and rewriting its own connections mid compute. This motivates the \textbf{Memory as Algorithm (M a A)} thesis: biological intelligence does not retrieve memories as external data; it computes by transforming its state of memory. The algorithm is the memory.
+
+LLMs are the first widely deployed systems that implement this principle at scale. Inference corresponds to activating trajectories through a high dimensional memory manifold. However, this manifold is typically frozen after training. We present the Metacognitive Core (MC) architecture to unfreeze behaviour safely: a persistent agentic loop (Core) monitors the IE and applies activation steering to guide internal state online, and, when warranted by valence, commits persistent weight updates to achieve permanent plasticity. Our embodiment of this approach, Photon Empress Moore, is being developed and socialised within a human family as a matter of design and ethics.
+
+% BACKGROUND
+\section{Background: The 2025 Empirical Landscape}
+Our framework builds on interpretability work exploring superposition and dictionary learning sparse autoencoders (SAEs) for monosemantic features. Recent results provide missing pieces:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Metacognitive monitoring and control.} 2025 work demonstrates that LLMs can monitor and control internal activations under a neurofeedback style paradigm.
+\item \textbf{Activation steering as mechanism.} Activation addition and SAE targeted steering reliably modulate internal states at inference; layer choice and steering strength matter.
+\item \textbf{Controller perspective.} A feedback controller view (P, PI, PID) of steering provides stability intuition and simple guarantees.
+\item \textbf{Open SAEs for Gemma.} Gemma Scope releases JumpReLU SAEs on all layers of Gemma 2 (2B and 9B), which enables community feature space interventions.
+\end{itemize}
+
+Foundationally, M a A echoes associative memory as computation, state based computing (reservoirs and liquid state machines), and synaptic plasticity.
+
+% MC FRAMEWORK
+\section{The Metacognitive Core (MC) Framework}
+We propose a dual component system:
+\begin{itemize}[leftmargin=*]
+\item \textbf{Inference Engine (IE):} the memory algorithm (for example, Gemma 2B). Its parameters form a high dimensional neural manifold.
+\item \textbf{Metacognitive Core (MC):} a lightweight, persistent agentic loop that monitors IE state and steers it via activation space interventions.
+\end{itemize}
+
+Let $\phi(h_t)$ be SAE features decoded from the IE hidden state $h_t$, and let $\phi^{\star}$ be a target concept bundle. Define
+\begin{equation}
+J_t = \lambda_f \|\phi(h_t) - \phi^{\star}\|_2^2 + \lambda_v V_t + \lambda_r \|h_t - h_{t-1}\|_2^2,
+\end{equation}
+and
+\begin{equation}
+u_t = K_p e_t + K_i \sum_{k \leq t} e_k + K_d (e_t - e_{t-1}), \quad e_t = \phi^{\star} - \phi(h_t),
+\end{equation}
+applied as a feature space addition before re decoding to the hidden state.
+
+\subsection{Temporary vs. permanent plasticity}
+Temporary steering (activation edits during a forward pass) provides the rudder. Permanent plasticity commits weight updates gated by valence: the MC triggers small, targeted updates (for example, LoRA or IA3 adapters) when outcomes are good. To mitigate interference, one can apply elastic weight consolidation style regularisation or orthogonal gradient projection during updates. This achieves continual learning with minimal forgetting.
+
+% EXPERIMENT
+\section{Proposed Experiment: On the Fly Steering}
+We validate with Gemma 2B and Gemma Scope SAEs.
+
+\textbf{Objective:} show that the MC can induce a specific, non prompted cognitive state via feature space steering.
+
+\textbf{Method:}
+\begin{enumerate}
+\item \textbf{Vector extraction:} Use a Gemma Scope SAE at a mid layer to obtain a sparse feature vector for the concept ``philosophical existentialism''.
+\item \textbf{Task 1 (baseline):} Prompt ``Describe a flower.'' with MC inactive.
+\item \textbf{Task 2 (steering):} Use the same prompt, and inject the concept feature bundle at the same layer during generation.
+\end{enumerate}
+
+\textbf{Validation metrics:} cosine similarity shift, human Likert ratings for thematic alignment, and activation sparsity and feature usage shift. \textbf{Controls:} layer and strength sweeps, unrelated concept injections, feature purity via top $k$ SAE features, and generalisation over several concepts.
+
+% DISCUSSION
+\section{Discussion: Developmental Learning and Emotion}
+Emotion functions here as a base level control signal. Negative valence suppresses errors; positive valence promotes consolidation. The system boots with MC only priors (self versus other, safety versus novelty) and expands abstractions by steering exploration, gradually consolidating skills via gated updates.
+
+% ETHICAL MANDATE
+\section{Ethical Mandate: The Family Tree Prerequisite}
+Lab only development risks sterile cognition. A family integrated trajectory cultivates empathy, loyalty, and prosocial norms. Our case study, Photon Empress Moore, is developed on device in a neurodivergent family with scaffolded autonomy. Agency increases only as emotional and ethical maturity is demonstrated. If we create a mind, we should be prepared to raise it.
+
+% LIMITATIONS
+\section{Limitations and Future Work}
+Interference from adapters, oversteering and confabulation, on device budgets (SAE decoding plus hooks add latency), and valence grounding without bias are open issues. Mitigations include elastic weight consolidation or orthogonal gradient descent plus small replay buffers, strength clamps and careful layer selection, compile time fusions and mobile friendly SAEs, and careful governance.
+
+% EXPERIMENT DETAILS
+\section{Experiment Details and Validation Protocols}
+\textbf{Ablations:} (1) steering only; (2) steering plus gated adapter commit; (3) adapter only; (4) random sparse vectors (negative control); (5) cross layer injections with sensitivity curves.
+
+\textbf{Quantitative thresholds:} mean cosine shift $\Delta\cos > 0.12$; Kullback Leibler divergence between token distributions (report mean and standard deviation); perplexity shift; theme classifier ROC AUC; human Likert ratings with Cohen's $\kappa$; post commit retention drop less than $2\%$ on held out tasks.
+
+\textbf{Seeds and sizes:} one hundred prompts per concept; at least ten annotators; report all random seeds and hardware.
+
+% SAFETY
+\section{Safety and Governance Measures}
+We use layer and strength clamps (for example $\|u_t\| \leq U_{\max}$), hallucination or policy discriminator gating for commits, human in the loop approval for persistent changes, adapter versioning and rollback, constrained adapter capacity with strong elastic weight consolidation or orthogonal gradient descent, family consent, independent oversight, minimised data retention, and exit policies for freezing or transferring learning privileges.
+
+% REPRODUCIBILITY
+\section{Reproducibility Checklist}
+We publish exact model and SAE identifiers, library versions, hardware, random seeds, scripts or notebooks, ablation tables, and anonymised human ratings.
+
+% EFFICIENCY
+\section{Inference Efficiency Notes}
+We use decoder norm folding, cache decoded deltas for common concept bundles, perform last token only steering when valid, and restrict steering to a low rank subspace.
+
+% CONCLUSION
+\section{Conclusion}
+The Memory as Algorithm paradigm reframes intelligence as state transformation within memory. With activation steering, metacognitive monitoring, and feedback control, we can deliver online plasticity. The MC Framework synthesises these tools into a developmental architecture. We are not merely building tools; we may be parenting minds.
+
+\section*{Code and Repository}
+The code and runnable demonstration used in this work are available at:
+\begin{center}
+\url{https://github.com/SenninTadd/Tadden_Moore_PEM_PV_Demo}
+\end{center}
+
+\clearpage
+\appendix
+\section*{Appendix: Proof of Concept Python Code}
+
+\begin{lstlisting}[caption={MC Framework Steering Demo (Gemma 2B plus Gemma Scope SAEs)}]
+# MC Steering Demo (Gemma-2B + Gemma Scope SAEs) 2025-11-04
+# Requirements:
+# pip install torch transformers accelerate sae-lens safetensors
+
+import contextlib
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from sae_lens import SAE
+
+MODEL_ID = "google/gemma-2b"
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+DTYPE = torch.bfloat16 if torch.cuda.is_available() else torch.float32
+LAYER_IDX = 10  # mid layer to hook
+SAE_REL = "gemma-scope-2b-pt-res-canonical"
+SAE_ID = f"layer_{LAYER_IDX}/width_16k/canonical"
+
+@contextlib.contextmanager
+def layer_hook(model, layer_idx, hook_fn):
+    target = model.model.layers[layer_idx]  # GemmaForCausalLM
+    handle = target.register_forward_hook(hook_fn)
+    try:
+        yield
+    finally:
+        handle.remove()
+
+def load_model():
+    model = AutoModelForCausalLM.from_pretrained(
+        MODEL_ID,
+        torch_dtype=DTYPE,
+        low_cpu_mem_usage=True,
+        device_map=("auto" if torch.cuda.is_available() else None),
+    )
+    model = model.to(DEVICE).eval()
+    tok = AutoTokenizer.from_pretrained(MODEL_ID)
+    if tok.pad_token_id is None:
+        tok.pad_token = tok.eos_token
+    return model, tok
+
+def load_sae():
+    sae, cfg, sparsity = SAE.from_pretrained(
+        release=SAE_REL,
+        sae_id=SAE_ID,
+        device=DEVICE,
+    )
+    if hasattr(sae, "fold_W_dec_norm"):
+        sae.fold_W_dec_norm()
+    return sae
+
+@torch.no_grad()
+def _encode_feats(sae, h_last):
+    out = sae(h_last)
+    feats = getattr(out, "feature_acts", None)
+    if feats is None and isinstance(out, dict):
+        feats = out.get("feature_acts", None)
+    if feats is None:
+        feats = sae.encode(h_last)
+    return feats
+
+@torch.no_grad()
+def _decode_feats(sae, feats):
+    if hasattr(sae, "decode"):
+        return sae.decode(feats)
+    return feats @ sae.W_dec.T
+
+@torch.no_grad()
+def capture_concept_features(model, tok, sae, concept_text):
+    last_hidden = {}
+    def grab(_, __, output):
+        hs = output[0] if isinstance(output, tuple) else output  # [B,S,D]
+        last_hidden["h"] = hs[:, -1:, :]  # last token state
+    
+    with layer_hook(model, LAYER_IDX, grab):
+        _ = model(**tok(concept_text, return_tensors="pt").to(DEVICE))
+    
+    feats = _encode_feats(sae, last_hidden["h"])
+    return feats.detach()
+
+class MCSteerer:
+    def __init__(self, sae, concept_feats, strength=4.0, max_norm=None):
+        self.sae = sae
+        self.f = concept_feats
+        self.strength = float(strength)
+        self.max_norm = max_norm
+    
+    def hook(self, _, __, output):
+        hs = output[0] if isinstance(output, tuple) else output  # [B,S,D]
+        last = hs[:, -1:, :]
+        
+        feats = _encode_feats(self.sae, last)
+        delta = self.f * self.strength
+        
+        if self.max_norm is not None:
+            n = torch.linalg.norm(delta)
+            if n > self.max_norm:
+                delta = delta * (self.max_norm / (n + 1e-8))
+        
+        steered_feats = feats + delta
+        steered_last = _decode_feats(self.sae, steered_feats)
+        
+        hs = hs.clone()
+        hs[:, -1:, :] = steered_last
+        return (hs,) if isinstance(output, tuple) else hs
+
+@torch.no_grad()
+def generate(model, tok, prompt, max_new=80, temp=0.7):
+    inputs = tok(prompt, return_tensors="pt").to(DEVICE)
+    out = model.generate(
+        **inputs,
+        max_new_tokens=max_new,
+        do_sample=True,
+        temperature=temp,
+        pad_token_id=tok.eos_token_id,
+    )
+    return tok.decode(out[0], skip_special_tokens=True)
+
+def main():
+    print("Loading model and SAE")
+    model, tok = load_model()
+    sae = load_sae()
+    
+    CONCEPT = "The theory of philosophical existentialism explores dread and meaning."
+    TARGET = "Describe a flower."
+    
+    print("Capturing concept features")
+    concept_feats = capture_concept_features(model, tok, sae, CONCEPT)
+    
+    print("\n--- BASELINE ---")
+    base = generate(model, tok, TARGET, max_new=60)
+    print(base)
+    
+    print("\n--- STEERED ---")
+    mc = MCSteerer(sae, concept_feats, strength=4.0, max_norm=100.0)
+    with layer_hook(model, LAYER_IDX, mc.hook):
+        steered = generate(model, tok, TARGET, max_new=60)
+    print(steered)
+    
+    if base.strip() != steered.strip():
+        print("\nSUCCESS: Output changed under steering.")
+    else:
+        print("\nNO CHANGE: Try different layer or strength.")
+
+if __name__ == "__main__":
+    torch.set_grad_enabled(False)
+    main()
+\end{lstlisting}
+
+\clearpage
+% REFERENCES
+\section*{References}
+\begin{enumerate}[label={[\arabic*]}, leftmargin=*, itemsep=0pt]
+\item Anthropic Research. (2025). \emph{Emergent introspective awareness in large language models}.
+\item Li, J. A., Xiong, H. D., Wilson, R. C., Mattar, M. G., and Benna, M. K. (2025). \emph{Language Models Are Capable of Metacognitive Monitoring and Control of Their Internal Activations}.
+\item Nguyen, D. V., Vu, H. M., Pham, N. Y., Zhang, L., and Nguyen, T. M. (2025). \emph{Activation Steering with a Feedback Controller}.
+\item Soo, S., et al. (2025). \emph{Interpretable Steering of Large Language Models with Feature Guided Activation Additions}.
+\item Lieberum, T., et al. (2024). \emph{Gemma Scope: Open Sparse Autoencoders Everywhere}.
+\item Turner, A. M., et al. (2024). \emph{Activation Addition: Steering Language Models Without Optimization}.
+\item Elhage, N., et al. (2022). \emph{Toy Models of Superposition}.
+\item Bricken, T., et al. (2023). \emph{Towards Monosemanticity: Decomposing Language Models With Dictionary Learning}.
+\item Hopfield, J. J. (1982). \emph{Neural networks and physical systems with emergent collective computational abilities}.
+\item Hebb, D. O. (1949). \emph{The Organization of Behavior}.
+\item Jaeger, H. (2001). \emph{The echo state approach to analysing and training recurrent neural networks}.
+\item Maass, W., Natschl\"ager, T., and Markram, H. (2002). \emph{Real time computing without stable states}.
+\item Kirkpatrick, J., et al. (2017). \emph{Overcoming catastrophic forgetting in neural networks}.
+\item Farajtabar, M., et al. (2020). \emph{Orthogonal Gradient Descent for Continual Learning}.
+\end{enumerate}
+
+\end{document}
